@@ -1,29 +1,22 @@
 name: Build APK
 
-on:
-  push:
-    branches: [ main ]
+on: push
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install system dependencies
+      - name: Install deps
         run: |
           sudo apt update
-          sudo apt install -y openjdk-17-jdk zip unzip zlib1g-dev libncurses5-dev aidl
-
-      - name: Install Python dependencies
-        run: |
-          pip install --upgrade pip
+          sudo apt install -y openjdk-17-jdk zip unzip aidl
           pip install buildozer cython
 
       - name: Build APK
@@ -32,5 +25,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: aida64lite-apk
+          name: app
           path: bin/*.apk
